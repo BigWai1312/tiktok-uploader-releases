@@ -6,7 +6,7 @@ Windows x64 桌面上传助手安装包发布仓库。
 
 ## 安装和使用
 
-1. 在 Releases 页面下载 `像素TikTok上传助手-版本号-Setup.exe` 并安装。
+1. 在 Releases 页面下载 `TikTokUploader-版本号-Setup.exe` 并安装。
 2. 启动 ixBrowser，在目标窗口中完成 TikTok 登录。
 3. 在助手中关联窗口、添加视频、填写标签，并选择每条视频的目标窗口。
 4. 检查“上传与存储设置”，然后开始上传。
