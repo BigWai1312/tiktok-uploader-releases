@@ -1,2 +1,30 @@
-# tiktok-uploader-releases
-Pixel TikTok uploader - Windows installer downloads and release notes
+# 像素 TikTok 上传助手
+
+Windows x64 桌面上传助手安装包发布仓库。
+
+**[下载最新安装版](https://github.com/BigWai1312/tiktok-uploader-releases/releases/latest)**
+
+## 安装和使用
+
+1. 在 Releases 页面下载 `像素TikTok上传助手-版本号-Setup.exe` 并安装。
+2. 启动 ixBrowser，在目标窗口中完成 TikTok 登录。
+3. 在助手中关联窗口、添加视频、填写标签，并选择每条视频的目标窗口。
+4. 检查“上传与存储设置”，然后开始上传。
+
+新安装默认开启自动填写标签、AI 内容标记、展开设置、不添加音乐和提交后继续下一条。自动发布默认关闭；开启后会实际提交视频。非 AI 视频请关闭 AI 内容标记。关闭“不添加音乐”后需要人工选曲。
+
+## 数据与卸载
+
+- 设置、队列、日志及加密的账号资料默认保存在安装目录的 `data`。
+- 视频默认保存在安装目录的 `VideoRecords`，可在设置中更改。
+- 安装目录内提供 `卸载.exe`，也可通过 Windows“已安装的应用”卸载。
+- 升级、卸载保留数据与视频归档。不要直接把账号资料、代理密码或视频上传到 Issues。
+- ixBrowser 的窗口与登录态由 ixBrowser 自身管理；加密凭据不能保证跨电脑解密。
+
+## 更新和反馈
+
+当前通过 Releases 手动下载安装新版，客户端在线更新功能尚未接入。
+
+请在 Issues 中描述软件版本、问题步骤和经过脱敏的截图。安装包未数字签名，Windows 可能提示“未知发布者”。
+
+本仓库仅发布安装包、版本说明和校验文件，不包含项目源码。每个版本的验证范围与已知限制见对应 Release。
