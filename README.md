@@ -2,7 +2,7 @@
 
 Windows x64 桌面上传助手安装包发布仓库。
 
-**[下载最新安装版](https://github.com/BigWai1312/tiktok-uploader-releases/releases/latest)**
+安装包暂未对外开放下载，收费授权与代码保护检查完成后再发布。
 
 ## 安装和使用
 
