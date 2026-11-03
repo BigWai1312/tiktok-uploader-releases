@@ -20,14 +20,14 @@ Windows x64 桌面上传助手安装包发布仓库。
 
 ## 数据与卸载
 
-- 安装版账号、设置、队列、日志及加密登录凭据保存在 `%LOCALAPPDATA%\LiZiYang\TikTokUploader\data`。
-- 默认视频归档保存在 `%LOCALAPPDATA%\LiZiYang\TikTokUploader\VideoRecords`，可在设置中更改。
+- 安装版账号、设置、队列、日志、视频归档及加密登录凭据保存在 `<安装目录>\UserData\<Windows用户SID>`。
+- 首次升级会从 `%LOCALAPPDATA%\LiZiYang\TikTokUploader` 复制旧数据，旧副本保留作回退。
 - 开发版使用独立的 `%LOCALAPPDATA%\LiZiYang\TikTokUploader-Dev`，不读取安装版凭据。
 - 开始菜单同时提供“启动应用”和“卸载”；安装目录内也有 `卸载.exe`。
-- 覆盖安装保留数据。卸载默认保留个人数据；取消勾选“保留账号、设置、队列、日志和默认视频归档”会清除当前用户的软件数据及旧安装目录内的数据。
+- 覆盖安装保留数据。卸载默认保留个人数据；取消勾选“保留账号、设置、队列、日志和默认视频归档”会清除本安装目录内所有用户的数据及本机旧版数据。
 - 自定义视频目录和 ixBrowser 的窗口资料不会被卸载清理。加密凭据绑定 Windows 用户，不能保证跨电脑解密。
 
-`LiZiYang` 是应用的数据命名空间；`%LOCALAPPDATA%` 根据当前电脑的 Windows 用户确定，不是开发电脑的固定用户路径。
+安装程序只给 `UserData` 数据文件夹授予普通用户写权限，程序文件仍受保护。开发版数据独立保存在 `%LOCALAPPDATA%\LiZiYang\TikTokUploader-Dev`。
 
 ## 更新和反馈
 
