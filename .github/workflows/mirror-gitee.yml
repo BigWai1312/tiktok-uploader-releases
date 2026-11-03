@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   mirror:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
