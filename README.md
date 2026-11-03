@@ -2,7 +2,7 @@
 
 Windows x64 桌面上传助手安装包发布仓库。
 
-[下载最新安装版](https://github.com/BigWai1312/tiktok-uploader-releases/releases/latest)
+[GitHub 下载最新版](https://github.com/BigWai1312/tiktok-uploader-releases/releases/latest) | [Gitee 国内镜像](https://gitee.com/leecode312/tiktok-uploader-releases/releases/latest)
 
 ## 安装和使用
 
@@ -31,10 +31,10 @@ Windows x64 桌面上传助手安装包发布仓库。
 
 ## 更新和反馈
 
-通过 Releases 下载新版并覆盖安装；安装前退出正在运行的程序。客户端后台自动更新尚未接入。
+通过 Releases 下载新版并覆盖安装；安装前退出正在运行的程序。1.0.12 起可在“工作台设置 → 版本与更新”检查更新：同时查询 GitHub、Gitee，优先新版，同版本测量小段安装包下载后自动选择较快的可用来源。下载交给默认浏览器，不会自动安装。
 
 每个安装包附带 SHA-256 校验文件。请在 Issues 中描述软件版本、复现步骤和经过脱敏的截图，不要提交账号资料、令牌、代理密码或视频。
 
-安装包未配置可信数字签名，Windows 可能提示“未知发布者”。本仓库只发布安装包、版本说明和校验文件，项目源码保存在私有仓库。代码混淆不能保证程序不可破解。
+安装包未配置可信数字签名，Windows 可能提示“未知发布者”。本仓库只发布安装包、版本说明、校验文件与发布镜像脚本，应用源码保存在私有仓库。代码混淆不能保证程序不可破解。
 
 每个版本的测试范围与已知限制见对应 Release。真实 TikTok 上传、发布及支付扣款不属于自动化测试范围。
