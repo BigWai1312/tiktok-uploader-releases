@@ -1,0 +1,24 @@
+name: Mirror Installer To Gitee
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: gitee-installer-mirror
+  cancel-in-progress: false
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify And Mirror Latest Installer
+        shell: pwsh
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ./sync-gitee-release.ps1 -SelfTest
+          ./sync-gitee-release.ps1 -PruneGitHub
