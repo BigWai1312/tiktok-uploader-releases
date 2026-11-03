@@ -75,8 +75,19 @@ try {
     $file = Get-Item -LiteralPath (Join-Path $temporary $name)
     $attachment = $attachments | Where-Object name -CEQ $name | Select-Object -First 1
     if (-not $attachment) {
-      Write-Output "Uploading $name"
-      $attachment = Invoke-RestMethod "$giteeApi/releases/$($release.id)/attach_files" -Method Post -Headers $headers -Form @{file=$file} -TimeoutSec 300
+      $curl = if ($IsWindows) { 'curl.exe' } else { 'curl' }
+      for ($attempt = 0; $attempt -lt 2; $attempt++) {
+        Write-Output "Uploading $name (attempt $($attempt + 1))"
+        # Headers go through stdin so the token is absent from process arguments.
+        $uploaded = "Authorization: $($headers.Authorization)" | & $curl --silent --show-error --fail --http1.1 `
+          --connect-timeout 30 --max-time 300 --header '@-' --form "file=@$($file.FullName)" "$giteeApi/releases/$($release.id)/attach_files"
+        if ($LASTEXITCODE -eq 0) { $attachment = ($uploaded -join "`n") | ConvertFrom-Json; break }
+        Start-Sleep -Seconds 2
+        $saved = Invoke-RestMethod "$giteeApi/releases/$($release.id)/attach_files?per_page=100" -Headers $headers -TimeoutSec 30
+        $attachment = $saved | Where-Object name -CEQ $name | Select-Object -First 1
+        if ($attachment) { break }
+      }
+      if (-not $attachment) { throw "Gitee upload failed: $name; previous releases were preserved" }
     }
     $url = "https://gitee.com/$giteeRepo/releases/download/$($source.tag_name)/$name"
     if ($attachment.browser_download_url -cne $url) { throw 'Unexpected Gitee attachment URL' }
