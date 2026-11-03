@@ -19,6 +19,17 @@ function Get-InstallerName($release) {
   return $name
 }
 
+function Get-GiteeJson([string]$Url) {
+  for ($attempt = 0; ; $attempt++) {
+    try { return Invoke-RestMethod $Url -Headers $headers -TimeoutSec 60 }
+    catch {
+      $status = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { 0 }
+      if ($attempt -ge 1 -or ($status -ge 400 -and $status -lt 500 -and $status -notin @(408, 429))) { throw }
+      Start-Sleep -Seconds 3
+    }
+  }
+}
+
 if ($SelfTest) {
   $fixture = @{ tag_name='v1.2.3'; draft=$false; prerelease=$false; assets=@() }
   foreach ($name in @('TikTokUploader-1.2.3-Setup.exe', 'TikTokUploader-1.2.3-Setup.exe.sha256')) {
@@ -64,13 +75,13 @@ try {
   if ($checksum -cnotmatch "^([A-Fa-f0-9]{64})  $([regex]::Escape($installer))$" -or $Matches[1] -ine $hash) { throw 'GitHub installer checksum mismatch' }
   $digest = ($source.assets | Where-Object name -CEQ $installer).digest
   if ($digest -and $digest -ine "sha256:$hash") { throw 'GitHub asset digest mismatch' }
-  $releases = Invoke-RestMethod "$giteeApi/releases?per_page=100" -Headers $headers -TimeoutSec 30
+  $releases = Get-GiteeJson "$giteeApi/releases?per_page=100"
   $release = $releases | Where-Object tag_name -CEQ $source.tag_name | Select-Object -First 1
   $body = @{ tag_name=$source.tag_name; name=$source.name; body=$source.body; target_commitish='main'; prerelease=$true }
   if (-not $release) {
     $release = Invoke-RestMethod "$giteeApi/releases" -Method Post -Headers $headers -ContentType 'application/json' -Body ($body | ConvertTo-Json) -TimeoutSec 30
   }
-  $attachments = Invoke-RestMethod "$giteeApi/releases/$($release.id)/attach_files?per_page=100" -Headers $headers -TimeoutSec 30
+  $attachments = Get-GiteeJson "$giteeApi/releases/$($release.id)/attach_files?per_page=100"
   foreach ($name in @($installer, "$installer.sha256")) {
     $file = Get-Item -LiteralPath (Join-Path $temporary $name)
     $attachment = $attachments | Where-Object name -CEQ $name | Select-Object -First 1
@@ -83,7 +94,7 @@ try {
           --connect-timeout 30 --max-time 300 --header '@-' --header 'Expect:' --form "file=@$($file.FullName)" "$giteeApi/releases/$($release.id)/attach_files"
         if ($LASTEXITCODE -eq 0) { $attachment = ($uploaded -join "`n") | ConvertFrom-Json; break }
         Start-Sleep -Seconds 2
-        $saved = Invoke-RestMethod "$giteeApi/releases/$($release.id)/attach_files?per_page=100" -Headers $headers -TimeoutSec 30
+        $saved = Get-GiteeJson "$giteeApi/releases/$($release.id)/attach_files?per_page=100"
         $attachment = $saved | Where-Object name -CEQ $name | Select-Object -First 1
         if ($attachment) { break }
       }
