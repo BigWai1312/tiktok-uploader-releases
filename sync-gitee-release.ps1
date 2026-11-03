@@ -80,7 +80,7 @@ try {
         Write-Output "Uploading $name (attempt $($attempt + 1))"
         # Headers go through stdin so the token is absent from process arguments.
         $uploaded = "Authorization: $($headers.Authorization)" | & $curl --silent --show-error --fail --http1.1 `
-          --connect-timeout 30 --max-time 300 --header '@-' --form "file=@$($file.FullName)" "$giteeApi/releases/$($release.id)/attach_files"
+          --connect-timeout 30 --max-time 300 --header '@-' --header 'Expect:' --form "file=@$($file.FullName)" "$giteeApi/releases/$($release.id)/attach_files"
         if ($LASTEXITCODE -eq 0) { $attachment = ($uploaded -join "`n") | ConvertFrom-Json; break }
         Start-Sleep -Seconds 2
         $saved = Invoke-RestMethod "$giteeApi/releases/$($release.id)/attach_files?per_page=100" -Headers $headers -TimeoutSec 30
